@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System;
+using System.Speech.Synthesis;
 using System.Collections.Generic;
 
 namespace CyberSecurityChatbot
@@ -68,16 +69,19 @@ namespace CyberSecurityChatbot
         // Plays a simple beep-based greeting sound
         static void PlayGreeting()
         {
+
             try
             {
-                Console.Beep(800, 200);
-                Console.Beep(1000, 200);
-                Console.Beep(1200, 300);
+                var speaker = new SpeechSynthesizer();
+                speaker.Volume = 100;
+                speaker.Rate = 0;
+
+                speaker.Speak("Hello. Welcome to the Cybersecurity Awareness Chatbot.");
+                speaker.Speak("I am here to help you stay safe online.");
             }
             catch
             {
-                // Some systems do not support Console.Beep()
-                // This prevents the program from crashing
+                WriteError("Voice greeting could not be played.");
             }
         }
 
