@@ -5,42 +5,53 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System;
-using System.Speech.Synthesis;
 using System.Collections.Generic;
+using System.Speech.Synthesis;
 
 namespace CyberSecurityChatbot
 {
     internal class Program
     {
+        // Global speech engine used throughout the program
+        static SpeechSynthesizer speaker = new SpeechSynthesizer();
+
         // Entry point of the application
         static void Main(string[] args)
         {
-            // Set the console window title
-            Console.Title = "Cybersecurity Awareness Chatbot";
-
-            // Apply console theme and display welcome screen
+            ConfigureSpeaker();
             SetTheme();
             ShowWelcomeBanner();
-
-            // Play audio greeting (beep sounds)
             PlayGreeting();
 
-            // Ask for user's name and start chatbot interaction
             string userName = AskUserName();
             StartChat(userName);
 
-            // Display goodbye message when user exits
             ShowGoodbyeMessage();
         }
 
-        // Sets console background and clears screen
+        // Configures the voice settings once at the start
+        static void ConfigureSpeaker()
+        {
+            try
+            {
+                speaker.Volume = 100;
+                speaker.Rate = 2;
+            }
+            catch
+            {
+                // Prevents crashes if voice configuration fails
+            }
+        }
+
+        // Sets console background and title
         static void SetTheme()
         {
+            Console.Title = "Cybersecurity Awareness Chatbot";
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
         }
 
-        // Displays ASCII art and welcome banner
+        // Displays welcome banner and ASCII art
         static void ShowWelcomeBanner()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -48,7 +59,6 @@ namespace CyberSecurityChatbot
             Console.WriteLine("             CYBERSECURITY AWARENESS CHATBOT");
             Console.WriteLine("============================================================");
 
-            // ASCII art for visual appeal
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(@"   ____       _                  ____                      _ _         ");
             Console.WriteLine(@"  / ___|  ___| |__   ___ _ __   / ___|___  _ __  ___  ___ | | |        ");
@@ -58,24 +68,18 @@ namespace CyberSecurityChatbot
 
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("              Stay smart. Stay alert. Stay safe online.");
-
+            Console.WriteLine("           Stay smart. Stay alert. Stay safe online.");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("============================================================");
             Console.ResetColor();
             Console.WriteLine();
         }
 
-        // Plays a simple beep-based greeting sound
+        // Plays the starting voice greeting
         static void PlayGreeting()
         {
-
             try
             {
-                var speaker = new SpeechSynthesizer();
-                speaker.Volume = 100;
-                speaker.Rate = 0;
-
                 speaker.Speak("Hello. Welcome to the Cybersecurity Awareness Chatbot.");
                 speaker.Speak("I am here to help you stay safe online.");
             }
@@ -85,65 +89,71 @@ namespace CyberSecurityChatbot
             }
         }
 
-        // Prompts user to enter their name with validation
+        // Asks the user for their name and validates the input
         static string AskUserName()
         {
-            string userName = "";
+            string userName;
 
             while (true)
             {
                 WriteBot("Hello! Welcome to the Cybersecurity Awareness Chatbot.");
-                WriteBot("Please enter your name to begin:");
+                WriteBot("Please enter your name to begin.");
 
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("You: ");
                 string input = Console.ReadLine();
 
-                // Validate empty input
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    WriteError("Name cannot be empty. Please enter a valid name.");
+                    WriteError("Name cannot be empty. Please enter your name.");
                     continue;
                 }
 
                 userName = input.Trim();
 
-                // Validate minimum name length
                 if (userName.Length < 2)
                 {
-                    WriteError("Your name is too short. Please enter at least 2 characters.");
+                    WriteError("Name must be at least 2 characters long.");
+                    continue;
+                }
+
+                if (userName.Length > 20)
+                {
+                    WriteError("Name is too long. Please enter a shorter name.");
                     continue;
                 }
 
                 break;
             }
 
-            // Personalised greeting
             WriteBot("Nice to meet you, " + userName + "!");
-            WriteBot("I can help you learn about phishing, passwords, privacy, malware, scams, and safe browsing.");
+            SpeakText("Nice to meet you " + userName);
+
+            WriteBot("I can help you learn about phishing, passwords, privacy, malware, scams, safe browsing, and two-factor authentication.");
             WriteBot("Type 'help' to see available topics or type 'exit' to close the chatbot.");
 
             return userName;
         }
 
-        // Main chatbot loop handling user interaction
+        // Main chatbot conversation loop
         static void StartChat(string userName)
         {
-            // Dictionary storing chatbot responses (keyword-based)
             Dictionary<string, string> responses = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { "password", "A strong password should be long, unique, and difficult to guess. Use uppercase letters, lowercase letters, numbers, and special characters. Do not use your name or birth date." },
-                { "phishing", "Phishing is a cyber attack where criminals pretend to be trusted organisations to steal your personal information. Do not click suspicious links or open unknown attachments." },
-                { "privacy", "You can protect your privacy by limiting what you share online, using strong passwords, enabling privacy settings, and checking app permissions regularly." },
-                { "malware", "Malware is harmful software designed to damage your computer, steal data, or spy on you. Avoid downloading files from unknown websites and keep your antivirus updated." },
-                { "scam", "Online scams often try to create panic, urgency, or excitement. Always verify messages, websites, and payment requests before responding." },
+                { "password", "A strong password should be long, unique, and hard to guess. Use uppercase letters, lowercase letters, numbers, and special characters. Never use your name, birthday, or common words." },
+                { "phishing", "Phishing is a cyber attack where criminals pretend to be trusted organisations to steal personal information such as passwords or bank details. Always check links, email addresses, and suspicious attachments carefully." },
+                { "privacy", "You can protect your privacy by limiting what you share online, checking privacy settings on social media, using strong passwords, and avoiding suspicious apps or websites." },
+                { "malware", "Malware is harmful software that can damage your device, spy on you, or steal your information. Keep your antivirus updated and avoid downloading files from unknown sources." },
+                { "scam", "Scams often use fear, urgency, or fake promises to trick people. Never share sensitive information or send money unless you are sure the request is genuine." },
                 { "safe browsing", "Safe browsing means visiting trusted websites, checking for HTTPS, avoiding suspicious downloads, and keeping your browser and software updated." },
-                { "help", "Available topics: password, phishing, privacy, malware, scam, safe browsing. You can also ask: 'how are you', 'what can you do', or type 'exit'." }
+                { "two-factor authentication", "Two-factor authentication adds an extra layer of security by requiring a second step when logging in, such as a code sent to your phone. It is one of the best ways to protect your accounts." },
+                { "2fa", "Two-factor authentication adds an extra layer of security by requiring a second step when logging in, such as a code sent to your phone. It is one of the best ways to protect your accounts." },
+                { "cybersecurity", "Cybersecurity is the practice of protecting computers, devices, networks, and personal data from digital attacks and unauthorised access." },
+                { "help", "You can ask about password safety, phishing, privacy, malware, scams, safe browsing, two-factor authentication, or general cybersecurity." }
             };
 
             bool chatting = true;
 
-            // Chat loop continues until user exits
             while (chatting)
             {
                 WriteSectionHeader("Ask a cybersecurity question");
@@ -152,7 +162,6 @@ namespace CyberSecurityChatbot
                 Console.Write(userName + ": ");
                 string input = Console.ReadLine();
 
-                // Handle empty input
                 if (string.IsNullOrWhiteSpace(input))
                 {
                     WriteError("Input cannot be empty. Please type a question.");
@@ -161,29 +170,30 @@ namespace CyberSecurityChatbot
 
                 input = input.Trim().ToLower();
 
-                // Exit conditions
                 if (input == "exit" || input == "quit" || input == "bye")
                 {
                     chatting = false;
                 }
-                // Basic conversational responses
                 else if (input.Contains("how are you"))
                 {
                     WriteBot("I am doing well, " + userName + ". Thank you for asking. I am ready to help you stay safe online.");
                 }
                 else if (input.Contains("what can you do"))
                 {
-                    WriteBot("I can answer questions about password safety, phishing, online privacy, malware, scams, and safe browsing.");
+                    WriteBot("I can answer questions about password safety, phishing, online privacy, malware, scams, safe browsing, and account protection.");
                 }
                 else if (input.Contains("thank you") || input.Contains("thanks"))
                 {
-                    WriteBot("You are welcome, " + userName + "! It is important to stay informed and alert online.");
+                    WriteBot("You are welcome, " + userName + "! Staying informed is one of the best ways to stay safe online.");
+                }
+                else if (input.Contains("your name"))
+                {
+                    WriteBot("I am the Cybersecurity Awareness Chatbot, your digital safety assistant.");
                 }
                 else
                 {
                     bool foundResponse = false;
 
-                    // Loop through dictionary to find matching keyword
                     foreach (KeyValuePair<string, string> item in responses)
                     {
                         if (input.Contains(item.Key))
@@ -194,16 +204,15 @@ namespace CyberSecurityChatbot
                         }
                     }
 
-                    // Default response if no keyword matches
                     if (!foundResponse)
                     {
-                        WriteBot("I do not have an answer for that yet. Please ask about password, phishing, privacy, malware, scam, or safe browsing.");
+                        WriteBot("I do not have an answer for that yet. Please ask about password safety, phishing, privacy, malware, scams, safe browsing, or two-factor authentication.");
                     }
                 }
             }
         }
 
-        // Displays chatbot messages in styled format
+        // Displays chatbot messages in a styled format and speaks them
         static void WriteBot(string message)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -212,9 +221,25 @@ namespace CyberSecurityChatbot
             Console.WriteLine(message);
             Console.ResetColor();
             Console.WriteLine();
+
+            SpeakText(message);
         }
 
-        // Displays error messages in red
+        // Helper method for speech output
+        static void SpeakText(string message)
+        {
+            try
+            {
+                speaker.SpeakAsyncCancelAll();
+                speaker.SpeakAsync(message);
+            }
+            catch
+            {
+                // Prevents crashes if speech fails
+            }
+        }
+
+        // Displays error messages
         static void WriteError(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -225,7 +250,7 @@ namespace CyberSecurityChatbot
             Console.WriteLine();
         }
 
-        // Displays section headers for better UI structure
+        // Displays section headers
         static void WriteSectionHeader(string title)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -235,7 +260,7 @@ namespace CyberSecurityChatbot
             Console.ResetColor();
         }
 
-        // Displays closing message when chatbot ends
+        // Displays goodbye message and speaks it
         static void ShowGoodbyeMessage()
         {
             Console.WriteLine();
@@ -243,6 +268,15 @@ namespace CyberSecurityChatbot
             Console.WriteLine("Thank you for using the Cybersecurity Awareness Chatbot.");
             Console.WriteLine("Goodbye and stay safe online!");
             Console.ResetColor();
+
+            try
+            {
+                speaker.Speak("Goodbye and stay safe online.");
+            }
+            catch
+            {
+                // Prevents crashes on exit
+            }
         }
     }
 }
