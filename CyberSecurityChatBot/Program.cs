@@ -10,6 +10,17 @@ namespace CyberSecurityChatBot
     {
         static void Main(string[] args)
         {
+            Console.Title = "Cybersecurity Awareness Chatbot";
+
+            UIHelper.SetTheme();
+            UIHelper.ShowWelcomeBanner();
+
+            AudioHelper.PlayGreeting();
+
+            Chatbot bot = new Chatbot();
+            bot.StartChat();
+
+            UIHelper.ShowGoodbyeMessage();
         }
     }
 }
