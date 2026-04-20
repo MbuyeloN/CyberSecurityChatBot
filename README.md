@@ -1,6 +1,6 @@
-# 🔐 Cybersecurity Awareness Chatbot
+# Cybersecurity Awareness Chatbot
 
-## 📚 Module Information
+## Module Information
 - **Module Name:** Programming 2A  
 - **Module Code:** PROG6221  
 - **Assessment:** Part 1  
@@ -9,7 +9,7 @@
 
 ---
 
-## 🧠 Project Overview
+## Project Overview
 
 The Cybersecurity Awareness Chatbot is a C# console-based application designed to educate users about important cybersecurity concepts in an interactive and engaging way.
 
@@ -25,30 +25,30 @@ This project demonstrates the use of:
 
 ---
 
-## 🎯 Features
+## Features
 
-### 🔊 Voice Greeting
+### Voice Greeting
 - The chatbot uses **text-to-speech (System.Speech)** to greet the user.
 - It also **speaks responses** during the interaction.
 - Speech speed and clarity are configured for better user experience.
 
 ---
 
-### 🎨 ASCII Art & Console UI
+### ASCII Art & Console UI
 - Displays a visually appealing **ASCII banner** at startup.
 - Uses **colours and formatting** to improve readability.
 - Structured layout with headers and spacing for clarity.
 
 ---
 
-### 👤 Personalised Interaction
+### Personalised Interaction
 - Prompts the user to enter their name.
 - Greets the user personally using their name.
 - Responds in a friendly and conversational tone.
 
 ---
 
-### 🤖 Chatbot Response System
+### Chatbot Response System
 The chatbot responds to various cybersecurity topics, including:
 
 - Password security
@@ -66,7 +66,7 @@ It also supports general conversation such as:
 
 ---
 
-### ⚠️ Input Validation
+### Input Validation
 - Prevents empty inputs
 - Ensures user name is valid
 - Provides helpful error messages
@@ -74,7 +74,7 @@ It also supports general conversation such as:
 
 ---
 
-### 🧱 Code Structure
+### Code Structure
 The application is structured using:
 - Methods for modular design
 - Clear naming conventions
@@ -83,7 +83,7 @@ The application is structured using:
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Language:** C#  
 - **Framework:** .NET Framework  
@@ -92,7 +92,7 @@ The application is structured using:
 
 ---
 
-## ▶️ How to Run the Application
+## How to Run the Application
 
 1. Open the project in **Visual Studio**
 2. Build the solution
@@ -103,7 +103,7 @@ The application is structured using:
 
 ---
 
-## 💬 Example Questions
+## Example Questions
 
 - What is phishing?
 - Tell me about password security
@@ -114,11 +114,7 @@ The application is structured using:
 
 ---
 
-## 📁 Project Structure
-
----
-
-## 🔄 Version Control (GitHub)
+## Version Control (GitHub)
 
 This project is managed using GitHub with:
 - Multiple commits showing development progress
@@ -127,7 +123,7 @@ This project is managed using GitHub with:
 
 ---
 
-## 🎥 Video Presentation
+## Video Presentation
 
 A video demonstration accompanies this project, explaining:
 - The purpose of the chatbot
@@ -137,7 +133,7 @@ A video demonstration accompanies this project, explaining:
 
 ---
 
-## 🚀 Future Improvements
+## Future Improvements
 
 - Add more advanced natural language processing
 - Expand cybersecurity topics
@@ -146,7 +142,7 @@ A video demonstration accompanies this project, explaining:
 
 ---
 
-## ✅ Conclusion
+## Conclusion
 
 This project successfully demonstrates the development of an interactive chatbot that educates users about cybersecurity while providing a user-friendly and engaging experience.
 
@@ -154,7 +150,7 @@ It combines technical implementation with practical real-world application, maki
 
 ---
 
-## 🙌 Acknowledgements
+## Acknowledgements
 
 - Course materials from Programming 2A
 - Microsoft documentation for System.Speech
